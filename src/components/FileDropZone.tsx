@@ -64,7 +64,6 @@ export default function FileDropZone({ onNodesLoaded }: Props) {
 
       {open && (
         <div className="px-3 pb-3 space-y-2 text-xs font-mono">
-          {/* Drop zone */}
           <div
             onDragOver={e => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
@@ -88,7 +87,6 @@ export default function FileDropZone({ onNodesLoaded }: Props) {
           {parsing && <div className="text-yellow-400 animate-pulse">Parsing file...</div>}
           {error && <div className="text-red-400">{error}</div>}
 
-          {/* Preview table */}
           {rows.length > 0 && (
             <div className="space-y-2">
               <div className="text-slate-500">{rows.length} rows parsed — preview (first 3):</div>

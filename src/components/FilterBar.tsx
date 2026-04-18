@@ -28,7 +28,6 @@ export default function FilterBar({
       className="flex items-center gap-4 px-4 py-2 border-b shrink-0 flex-wrap"
       style={{ background: '#0a0f1e', borderColor: '#1e293b' }}
     >
-      {/* Type pills */}
       <div className="flex gap-2">
         {(['OSINT', 'HUMINT', 'IMINT'] as IntelType[]).map(t => (
           <button
@@ -46,7 +45,6 @@ export default function FilterBar({
         ))}
       </div>
 
-      {/* Search */}
       <div className="flex items-center gap-1 border rounded px-2 py-1" style={{ borderColor: '#1e293b' }}>
         <Search size={12} className="text-slate-500" />
         <input
@@ -57,7 +55,6 @@ export default function FilterBar({
         />
       </div>
 
-      {/* Confidence slider */}
       <div className="flex items-center gap-2">
         <span className="text-xs font-mono text-slate-500">MIN CONF:</span>
         <input
@@ -68,7 +65,6 @@ export default function FilterBar({
         <span className="text-xs font-mono text-blue-400 w-8">{minConfidence}%</span>
       </div>
 
-      {/* Status filter */}
       <select
         value={statusFilter}
         onChange={e => onStatusFilter(e.target.value as ReviewStatus | 'all')}

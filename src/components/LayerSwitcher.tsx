@@ -28,7 +28,6 @@ interface Props {
   onChange: (layer: BaseLayer) => void;
 }
 
-// Renders the correct TileLayer inside MapContainer based on activeLayer
 export function TileLayerController({ activeLayer }: { activeLayer: BaseLayer }) {
   const cfg = LAYERS[activeLayer];
   return (
@@ -41,7 +40,6 @@ export function TileLayerController({ activeLayer }: { activeLayer: BaseLayer })
   );
 }
 
-// UI overlay — rendered as absolute div over the map
 export function LayerSwitcherOverlay({ activeLayer, onChange }: Props) {
   return (
     <div

@@ -1,26 +1,18 @@
 import type { IntelNode } from '../types/intel';
 
-// Safe base64 encoder that handles Unicode/extended chars in SVG
 function svgToDataUri(svg: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-// SVG satellite imagery as data URIs for S3 IMINT nodes
-// Simulates realistic satellite/aerial reconnaissance imagery
 const makeSatSvg = (color: string, label: string, variant: number = 0) => {
   const variants = [
-    // Variant 0: Industrial zone with buildings
     `<svg xmlns="http://www.w3.org/2000/svg" width="380" height="220" viewBox="0 0 380 220">
-      <rect width="380" height="220" fill="#0d1117"/>
-      <!-- Terrain base -->
-      <rect x="0" y="0" width="380" height="220" fill="#111827"/>
-      <!-- Ground patches -->
+      <rect width="380" height="220" fill="#111827"/>
       <rect x="20" y="30" width="80" height="60" fill="#1a2332" rx="2"/>
       <rect x="120" y="20" width="100" height="80" fill="#162030" rx="2"/>
       <rect x="240" y="40" width="70" height="50" fill="#1a2332" rx="2"/>
       <rect x="30" y="120" width="120" height="70" fill="#162030" rx="2"/>
       <rect x="200" y="110" width="150" height="90" fill="#1a2332" rx="2"/>
-      <!-- Buildings/structures -->
       <rect x="35" y="38" width="28" height="20" fill="${color}33" stroke="${color}88" stroke-width="0.5"/>
       <rect x="70" y="42" width="20" height="14" fill="${color}22" stroke="${color}66" stroke-width="0.5"/>
       <rect x="130" y="30" width="40" height="30" fill="${color}44" stroke="${color}" stroke-width="0.8"/>
@@ -31,97 +23,70 @@ const makeSatSvg = (color: string, label: string, variant: number = 0) => {
       <rect x="100" y="135" width="35" height="25" fill="${color}22" stroke="${color}55" stroke-width="0.5"/>
       <rect x="210" y="120" width="60" height="40" fill="${color}33" stroke="${color}77" stroke-width="0.5"/>
       <rect x="285" y="125" width="50" height="60" fill="${color}44" stroke="${color}" stroke-width="0.8"/>
-      <!-- Roads -->
       <line x1="0" y1="100" x2="380" y2="100" stroke="#2a3a4a" stroke-width="3"/>
       <line x1="190" y1="0" x2="190" y2="220" stroke="#2a3a4a" stroke-width="3"/>
       <line x1="0" y1="100" x2="380" y2="100" stroke="#334155" stroke-width="1" stroke-dasharray="8,6"/>
-      <!-- Scan lines overlay -->
-      <rect width="380" height="220" fill="url(#scan)" opacity="0.15"/>
-      <defs>
-        <pattern id="scan" width="1" height="4" patternUnits="userSpaceOnUse">
-          <rect width="1" height="1" fill="#000" opacity="0.5"/>
-        </pattern>
-      </defs>
-      <!-- Targeting reticle on main structure -->
       <circle cx="150" cy="45" r="22" fill="none" stroke="${color}" stroke-width="1" opacity="0.9"/>
       <circle cx="150" cy="45" r="4" fill="${color}" opacity="0.9"/>
       <line x1="128" y1="45" x2="138" y2="45" stroke="${color}" stroke-width="1"/>
       <line x1="162" y1="45" x2="172" y2="45" stroke="${color}" stroke-width="1"/>
       <line x1="150" y1="23" x2="150" y2="33" stroke="${color}" stroke-width="1"/>
       <line x1="150" y1="57" x2="150" y2="67" stroke="${color}" stroke-width="1"/>
-      <!-- Corner markers -->
       <polyline points="5,5 5,18 18,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,5 375,18 362,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="5,215 5,202 18,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,215 375,202 362,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
-      <!-- Grid overlay -->
       <line x1="95" y1="0" x2="95" y2="220" stroke="${color}22" stroke-width="0.5"/>
       <line x1="190" y1="0" x2="190" y2="220" stroke="${color}22" stroke-width="0.5"/>
       <line x1="285" y1="0" x2="285" y2="220" stroke="${color}22" stroke-width="0.5"/>
       <line x1="0" y1="73" x2="380" y2="73" stroke="${color}22" stroke-width="0.5"/>
       <line x1="0" y1="146" x2="380" y2="146" stroke="${color}22" stroke-width="0.5"/>
-      <!-- Label bar -->
       <rect x="0" y="200" width="380" height="20" fill="#0a0f1ecc"/>
       <text x="8" y="214" fill="${color}" font-size="9" font-family="monospace" font-weight="bold">${label}</text>
       <text x="280" y="214" fill="${color}88" font-size="8" font-family="monospace">CLASSIFIED//NOFORN</text>
     </svg>`,
 
-    // Variant 1: Port/harbour with vessels
     `<svg xmlns="http://www.w3.org/2000/svg" width="380" height="220" viewBox="0 0 380 220">
       <rect width="380" height="220" fill="#0a1628"/>
-      <!-- Water -->
       <rect x="0" y="110" width="380" height="110" fill="#0c2340"/>
-      <!-- Water texture -->
       <line x1="0" y1="120" x2="380" y2="118" stroke="#0e2a4a" stroke-width="2"/>
       <line x1="0" y1="135" x2="380" y2="133" stroke="#0e2a4a" stroke-width="1.5"/>
       <line x1="0" y1="150" x2="380" y2="152" stroke="#0e2a4a" stroke-width="2"/>
       <line x1="0" y1="168" x2="380" y2="165" stroke="#0e2a4a" stroke-width="1.5"/>
       <line x1="0" y1="185" x2="380" y2="188" stroke="#0e2a4a" stroke-width="2"/>
-      <!-- Land -->
       <rect x="0" y="0" width="380" height="115" fill="#111827"/>
-      <!-- Dock/pier -->
       <rect x="60" y="90" width="260" height="30" fill="#1e293b" stroke="#334155" stroke-width="1"/>
       <rect x="80" y="110" width="20" height="60" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
       <rect x="160" y="110" width="20" height="80" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
       <rect x="240" y="110" width="20" height="70" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
-      <!-- Vessels -->
       <ellipse cx="90" cy="145" rx="35" ry="10" fill="${color}33" stroke="${color}" stroke-width="1"/>
       <rect x="70" y="138" width="40" height="8" fill="${color}44" stroke="${color}88" stroke-width="0.5"/>
       <ellipse cx="170" cy="160" rx="45" ry="12" fill="${color}22" stroke="${color}77" stroke-width="1"/>
       <rect x="148" y="152" width="44" height="9" fill="${color}33" stroke="${color}66" stroke-width="0.5"/>
       <ellipse cx="260" cy="150" rx="38" ry="11" fill="${color}44" stroke="${color}" stroke-width="1.2"/>
       <rect x="238" y="143" width="44" height="8" fill="${color}55" stroke="${color}" stroke-width="0.5"/>
-      <!-- Targeting on vessel 3 (AIS dark) -->
       <circle cx="260" cy="150" r="20" fill="none" stroke="${color}" stroke-width="1.2" opacity="0.9"/>
       <circle cx="260" cy="150" r="3" fill="${color}"/>
       <line x1="240" y1="150" x2="248" y2="150" stroke="${color}" stroke-width="1"/>
       <line x1="272" y1="150" x2="280" y2="150" stroke="${color}" stroke-width="1"/>
       <line x1="260" y1="130" x2="260" y2="138" stroke="${color}" stroke-width="1"/>
       <line x1="260" y1="162" x2="260" y2="170" stroke="${color}" stroke-width="1"/>
-      <!-- Port infrastructure -->
       <rect x="20" y="20" width="60" height="40" fill="${color}22" stroke="${color}55" stroke-width="0.5"/>
       <rect x="100" y="30" width="80" height="50" fill="${color}33" stroke="${color}77" stroke-width="0.5"/>
       <rect x="200" y="15" width="50" height="35" fill="${color}22" stroke="${color}55" stroke-width="0.5"/>
       <rect x="270" y="25" width="90" height="55" fill="${color}33" stroke="${color}66" stroke-width="0.5"/>
-      <!-- Corner markers -->
       <polyline points="5,5 5,18 18,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,5 375,18 362,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="5,215 5,202 18,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,215 375,202 362,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
-      <!-- Label bar -->
       <rect x="0" y="200" width="380" height="20" fill="#0a0f1ecc"/>
       <text x="8" y="214" fill="${color}" font-size="9" font-family="monospace" font-weight="bold">${label}</text>
       <text x="260" y="214" fill="${color}88" font-size="8" font-family="monospace">3 VESSELS TRACKED</text>
     </svg>`,
 
-    // Variant 2: Airfield/runway
     `<svg xmlns="http://www.w3.org/2000/svg" width="380" height="220" viewBox="0 0 380 220">
-      <rect width="380" height="220" fill="#0d1117"/>
-      <!-- Terrain -->
       <rect width="380" height="220" fill="#111827"/>
-      <!-- Runway -->
       <rect x="30" y="90" width="320" height="40" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <!-- Runway markings -->
       <rect x="40" y="108" width="20" height="4" fill="#334155"/>
       <rect x="80" y="108" width="20" height="4" fill="#334155"/>
       <rect x="120" y="108" width="20" height="4" fill="#334155"/>
@@ -130,71 +95,56 @@ const makeSatSvg = (color: string, label: string, variant: number = 0) => {
       <rect x="240" y="108" width="20" height="4" fill="#334155"/>
       <rect x="280" y="108" width="20" height="4" fill="#334155"/>
       <rect x="320" y="108" width="20" height="4" fill="#334155"/>
-      <!-- Taxiway -->
       <rect x="180" y="50" width="20" height="90" fill="#1a2332" stroke="#2a3a4a" stroke-width="0.5"/>
       <rect x="280" y="50" width="20" height="90" fill="#1a2332" stroke="#2a3a4a" stroke-width="0.5"/>
-      <!-- Apron/terminal -->
       <rect x="20" y="20" width="120" height="60" fill="${color}22" stroke="${color}55" stroke-width="0.5"/>
       <rect x="160" y="15" width="80" height="65" fill="${color}33" stroke="${color}77" stroke-width="0.8"/>
       <rect x="260" y="20" width="100" height="55" fill="${color}22" stroke="${color}55" stroke-width="0.5"/>
-      <!-- Aircraft silhouettes -->
       <ellipse cx="200" cy="60" rx="18" ry="5" fill="${color}55" stroke="${color}" stroke-width="0.8"/>
       <line x1="200" y1="55" x2="200" y2="65" stroke="${color}" stroke-width="1"/>
       <line x1="185" y1="60" x2="215" y2="60" stroke="${color}" stroke-width="1.5"/>
       <ellipse cx="290" cy="55" rx="15" ry="4" fill="${color}44" stroke="${color}88" stroke-width="0.8"/>
       <line x1="290" y1="51" x2="290" y2="59" stroke="${color}" stroke-width="1"/>
       <line x1="278" y1="55" x2="302" y2="55" stroke="${color}" stroke-width="1.5"/>
-      <!-- New construction area -->
       <rect x="30" y="150" width="200" height="50" fill="${color}11" stroke="${color}44" stroke-width="1" stroke-dasharray="4,3"/>
       <text x="80" y="180" fill="${color}66" font-size="9" font-family="monospace">CONSTRUCTION ZONE</text>
-      <!-- Targeting reticle on aircraft -->
       <circle cx="200" cy="60" r="25" fill="none" stroke="${color}" stroke-width="1" opacity="0.9"/>
       <circle cx="200" cy="60" r="3" fill="${color}"/>
       <line x1="175" y1="60" x2="183" y2="60" stroke="${color}" stroke-width="1"/>
       <line x1="217" y1="60" x2="225" y2="60" stroke="${color}" stroke-width="1"/>
       <line x1="200" y1="35" x2="200" y2="43" stroke="${color}" stroke-width="1"/>
       <line x1="200" y1="77" x2="200" y2="85" stroke="${color}" stroke-width="1"/>
-      <!-- Corner markers -->
       <polyline points="5,5 5,18 18,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,5 375,18 362,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="5,215 5,202 18,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,215 375,202 362,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
-      <!-- Label bar -->
       <rect x="0" y="200" width="380" height="20" fill="#0a0f1ecc"/>
       <text x="8" y="214" fill="${color}" font-size="9" font-family="monospace" font-weight="bold">${label}</text>
       <text x="270" y="214" fill="${color}88" font-size="8" font-family="monospace">RUNWAY EXT +40%</text>
     </svg>`,
 
-    // Variant 3: Thermal/facility
     `<svg xmlns="http://www.w3.org/2000/svg" width="380" height="220" viewBox="0 0 380 220">
-      <rect width="380" height="220" fill="#0d0a0a"/>
-      <!-- Thermal base — dark background -->
       <rect width="380" height="220" fill="#120808"/>
-      <!-- Heat zones — thermal imaging style -->
       <ellipse cx="190" cy="110" rx="120" ry="80" fill="${color}08"/>
       <ellipse cx="190" cy="110" rx="80" ry="55" fill="${color}15"/>
       <ellipse cx="190" cy="110" rx="50" ry="35" fill="${color}25"/>
       <ellipse cx="190" cy="110" rx="25" ry="18" fill="${color}45"/>
       <ellipse cx="190" cy="110" rx="10" ry="8" fill="${color}88"/>
-      <!-- Secondary heat sources -->
       <ellipse cx="80" cy="60" rx="30" ry="20" fill="${color}18"/>
       <ellipse cx="80" cy="60" rx="15" ry="10" fill="${color}35"/>
       <ellipse cx="80" cy="60" rx="6" ry="4" fill="${color}66"/>
       <ellipse cx="300" cy="160" rx="35" ry="22" fill="${color}15"/>
       <ellipse cx="300" cy="160" rx="18" ry="12" fill="${color}30"/>
       <ellipse cx="300" cy="160" rx="7" ry="5" fill="${color}55"/>
-      <!-- Facility outline -->
       <rect x="100" y="60" width="180" height="100" fill="none" stroke="${color}44" stroke-width="1" stroke-dasharray="4,3"/>
       <rect x="120" y="75" width="60" height="45" fill="none" stroke="${color}66" stroke-width="0.8"/>
       <rect x="200" y="80" width="65" height="40" fill="none" stroke="${color}55" stroke-width="0.8"/>
-      <!-- Targeting reticle on hotspot -->
       <circle cx="190" cy="110" r="30" fill="none" stroke="${color}" stroke-width="1.2" opacity="0.9"/>
       <circle cx="190" cy="110" r="5" fill="${color}" opacity="0.9"/>
       <line x1="160" y1="110" x2="170" y2="110" stroke="${color}" stroke-width="1"/>
       <line x1="210" y1="110" x2="220" y2="110" stroke="${color}" stroke-width="1"/>
       <line x1="190" y1="80" x2="190" y2="90" stroke="${color}" stroke-width="1"/>
       <line x1="190" y1="130" x2="190" y2="140" stroke="${color}" stroke-width="1"/>
-      <!-- Temperature scale -->
       <rect x="340" y="30" width="12" height="160" fill="url(#thermal)" rx="2"/>
       <defs>
         <linearGradient id="thermal" x1="0" y1="0" x2="0" y2="1">
@@ -205,12 +155,10 @@ const makeSatSvg = (color: string, label: string, variant: number = 0) => {
       </defs>
       <text x="338" y="26" fill="${color}88" font-size="7" font-family="monospace">HOT</text>
       <text x="336" y="200" fill="${color}44" font-size="7" font-family="monospace">COLD</text>
-      <!-- Corner markers -->
       <polyline points="5,5 5,18 18,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,5 375,18 362,18" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="5,215 5,202 18,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
       <polyline points="375,215 375,202 362,202" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>
-      <!-- Label bar -->
       <rect x="0" y="200" width="380" height="20" fill="#0a0f1ecc"/>
       <text x="8" y="214" fill="${color}" font-size="9" font-family="monospace" font-weight="bold">${label}</text>
       <text x="240" y="214" fill="${color}88" font-size="8" font-family="monospace">IR BAND | ANOMALY DETECTED</text>

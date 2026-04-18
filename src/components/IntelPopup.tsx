@@ -23,13 +23,7 @@ export function IntelPopup({ node, onUpdate }: IntelPopupProps) {
   }) + ' UTC';
 
   return (
-    <Popup
-      maxWidth={400}
-      minWidth={320}
-      autoPan={true}
-      closeButton={true}
-      className="fusion-popup"
-    >
+    <Popup maxWidth={400} minWidth={320} autoPan={true} closeButton={true} className="fusion-popup">
       <div style={{
         fontFamily: "'Courier New', Courier, monospace",
         background: '#0f172a',
@@ -42,7 +36,6 @@ export function IntelPopup({ node, onUpdate }: IntelPopupProps) {
         maxWidth: '380px',
         boxSizing: 'border-box',
       }}>
-        {/* TOP ROW: type badge + classification */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
           <span style={{
             background: cfg.color, color: '#000', fontSize: '9px',
@@ -54,43 +47,33 @@ export function IntelPopup({ node, onUpdate }: IntelPopupProps) {
           }}>{node.classification}</span>
         </div>
 
-        {/* TITLE */}
         <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#f1f5f9', marginBottom: '6px' }}>{node.title}</div>
 
-        {/* LOCATION + TIMESTAMP */}
         <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '8px', display: 'flex', gap: '16px' }}>
           <span>📍 {node.location}</span>
           <span>🕐 {ts}</span>
         </div>
 
-        {/* SOURCE */}
         <div style={{ fontSize: '10px', color: '#475569', marginBottom: '10px', padding: '4px 6px', background: '#1e293b', borderRadius: '3px' }}>
           SRC: {node.source}
         </div>
 
-        {/* CONFIDENCE BAR */}
         <div style={{ marginBottom: '10px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#64748b', marginBottom: '4px' }}>
             <span>CONFIDENCE RATING</span>
             <span style={{ color: confColor(node.confidence), fontWeight: 'bold' }}>{node.confidence}% — {node.confidenceLevel}</span>
           </div>
           <div style={{ background: '#1e293b', borderRadius: '2px', height: '5px', overflow: 'hidden' }}>
-            <div style={{
-              width: `${node.confidence}%`, height: '100%',
-              background: confColor(node.confidence),
-              transition: 'width 0.4s ease',
-            }} />
+            <div style={{ width: `${node.confidence}%`, height: '100%', background: confColor(node.confidence), transition: 'width 0.4s ease' }} />
           </div>
         </div>
 
-        {/* SUMMARY */}
         <div style={{
           fontSize: '11px', color: '#cbd5e1', lineHeight: '1.6', marginBottom: '12px',
           padding: '8px', background: '#1e293b40', borderRadius: '4px',
           borderLeft: `2px solid ${cfg.color}`,
         }}>{node.summary}</div>
 
-        {/* IMINT IMAGERY */}
         {node.imageUrl && (
           <div style={{ marginBottom: '12px', borderRadius: '4px', overflow: 'hidden', border: `1px solid ${cfg.color}30` }}>
             <div style={{ background: '#0a0f1e', padding: '3px 8px', fontSize: '9px', color: cfg.color, letterSpacing: '1px', fontWeight: 'bold' }}>
@@ -110,7 +93,6 @@ export function IntelPopup({ node, onUpdate }: IntelPopupProps) {
           </div>
         )}
 
-        {/* TAGS */}
         {node.tags && node.tags.length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '12px' }}>
             {node.tags.map(tag => (
@@ -122,7 +104,6 @@ export function IntelPopup({ node, onUpdate }: IntelPopupProps) {
           </div>
         )}
 
-        {/* ACTION BUTTONS */}
         <div style={{ display: 'flex', gap: '6px' }}>
           <button
             onClick={(e) => { e.stopPropagation(); onUpdate(node.id, { status: 'reviewed' }); }}
@@ -146,7 +127,6 @@ export function IntelPopup({ node, onUpdate }: IntelPopupProps) {
           >⚑ FLAG PRIORITY</button>
         </div>
 
-        {/* Node ID footer */}
         <div style={{ marginTop: '8px', fontSize: '9px', color: '#334155', textAlign: 'right' }}>
           NODE ID: {node.id} | STATUS: {node.status.toUpperCase()}
         </div>

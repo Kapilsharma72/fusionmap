@@ -27,7 +27,6 @@ function getRadius(zoom: number): number {
   return 8;
 }
 
-// Captures the map instance into a ref
 function MapRefCapture({ mapRef }: { mapRef?: React.MutableRefObject<L.Map | null> }) {
   const map = useMap();
   useEffect(() => {
@@ -36,7 +35,6 @@ function MapRefCapture({ mapRef }: { mapRef?: React.MutableRefObject<L.Map | nul
   return null;
 }
 
-// Renders all markers with dynamic zoom-based radius
 function DynamicMarkers({
   nodes,
   onUpdateNode,
@@ -68,7 +66,6 @@ function DynamicMarkers({
 
         return (
           <span key={node.id}>
-            {/* Pulse ring */}
             <CircleMarker
               key={`${node.id}-pulse`}
               center={[node.lat, node.lng]}
@@ -83,8 +80,6 @@ function DynamicMarkers({
               }}
               interactive={false}
             />
-
-            {/* Main dot */}
             <CircleMarker
               key={node.id}
               center={[node.lat, node.lng]}
@@ -126,8 +121,6 @@ export default function MapView({ nodes, onUpdateNode, mapRef, markerRefs }: Pro
   const internalMapRef = useRef<L.Map | null>(null);
   const resolvedMapRef = mapRef ?? internalMapRef;
   const [activeLayer, setActiveLayer] = useState<BaseLayer>('dark');
-
-  // Hover modal state
   const [hoveredNode, setHoveredNode] = useState<IntelNode | null>(null);
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null);
 
@@ -154,10 +147,8 @@ export default function MapView({ nodes, onUpdateNode, mapRef, markerRefs }: Pro
         />
       </MapContainer>
 
-      {/* Layer switcher overlay */}
       <LayerSwitcherOverlay activeLayer={activeLayer} onChange={setActiveLayer} />
 
-      {/* Legend */}
       <div
         className="absolute bottom-4 right-4 z-[1000] rounded border p-3 text-xs font-mono space-y-1"
         style={{ background: '#0f172aee', borderColor: '#1e293b' }}
@@ -175,7 +166,6 @@ export default function MapView({ nodes, onUpdateNode, mapRef, markerRefs }: Pro
         </div>
       </div>
 
-      {/* Hover quick-info modal — PS1 "cursor-hover triggers a modal" */}
       {hoveredNode && hoverPos && (
         <HoverModal node={hoveredNode} pos={hoverPos} />
       )}
@@ -183,7 +173,6 @@ export default function MapView({ nodes, onUpdateNode, mapRef, markerRefs }: Pro
   );
 }
 
-// Lightweight hover modal — shows key metadata instantly on mouseover
 function HoverModal({ node, pos }: { node: IntelNode; pos: { x: number; y: number } }) {
   const cfg = {
     OSINT:  { color: '#3b82f6', label: 'OSINT' },
@@ -192,8 +181,6 @@ function HoverModal({ node, pos }: { node: IntelNode; pos: { x: number; y: numbe
   }[node.type];
 
   const confColor = node.confidence >= 80 ? '#22c55e' : node.confidence >= 60 ? '#f59e0b' : '#ef4444';
-
-  // Offset so modal doesn't sit under the cursor
   const left = pos.x + 16;
   const top = pos.y - 10;
 
@@ -217,7 +204,6 @@ function HoverModal({ node, pos }: { node: IntelNode; pos: { x: number; y: numbe
         boxShadow: `0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px ${cfg.color}20`,
       }}
     >
-      {/* Type badge + classification */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
         <span style={{
           background: cfg.color, color: '#000', fontSize: '8px',
@@ -227,18 +213,12 @@ function HoverModal({ node, pos }: { node: IntelNode; pos: { x: number; y: numbe
           {node.classification}
         </span>
       </div>
-
-      {/* Title */}
       <div style={{ fontWeight: 'bold', color: '#f1f5f9', marginBottom: '4px', fontSize: '11px', lineHeight: '1.3' }}>
         {node.title}
       </div>
-
-      {/* Location */}
       <div style={{ color: '#64748b', fontSize: '10px', marginBottom: '6px' }}>
         📍 {node.location}
       </div>
-
-      {/* Confidence bar */}
       <div style={{ marginBottom: '6px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: '#475569', marginBottom: '2px' }}>
           <span>CONFIDENCE</span>
@@ -248,8 +228,6 @@ function HoverModal({ node, pos }: { node: IntelNode; pos: { x: number; y: numbe
           <div style={{ width: `${node.confidence}%`, height: '100%', background: confColor, borderRadius: '2px' }} />
         </div>
       </div>
-
-      {/* IMINT imagery thumbnail */}
       {node.imageUrl && (
         <div style={{ marginBottom: '6px', borderRadius: '3px', overflow: 'hidden', border: `1px solid ${cfg.color}30` }}>
           <div style={{ background: '#0a0f1e', padding: '2px 6px', fontSize: '8px', color: cfg.color, letterSpacing: '1px' }}>
@@ -262,8 +240,6 @@ function HoverModal({ node, pos }: { node: IntelNode; pos: { x: number; y: numbe
           />
         </div>
       )}
-
-      {/* Status */}
       <div style={{ fontSize: '9px', color: '#334155', textAlign: 'right' }}>
         STATUS: {node.status.toUpperCase()} · CLICK TO INSPECT
       </div>

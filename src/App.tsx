@@ -14,13 +14,11 @@ export default function App() {
   const [s3Loaded, setS3Loaded] = useState(false);
   const [showDemoBanner, setShowDemoBanner] = useState(false);
 
-  // Filter state — default 'all' so all nodes show on load
   const [activeTypes, setActiveTypes] = useState<Set<IntelType>>(new Set(['OSINT', 'HUMINT', 'IMINT']));
   const [search, setSearch] = useState('');
   const [minConfidence, setMinConfidence] = useState(0);
   const [statusFilter, setStatusFilter] = useState<ReviewStatus | 'all'>('all');
 
-  // Map refs for demo mode
   const mapRef = useRef<L.Map | null>(null);
   const markerRefs = useRef<Record<string, L.CircleMarker>>({});
 
@@ -63,7 +61,6 @@ export default function App() {
     );
   }, [nodes, activeTypes, search, minConfidence, statusFilter]);
 
-  // Demo mode — reset filters, fly to first IMINT node, open its popup
   const handleDemoMode = () => {
     setActiveTypes(new Set(['OSINT', 'HUMINT', 'IMINT']));
     setMinConfidence(0);
@@ -85,7 +82,6 @@ export default function App() {
     setTimeout(() => setShowDemoBanner(false), 7000);
   };
 
-  // Export intel report as JSON
   const handleExport = () => {
     const report = {
       generatedAt: new Date().toISOString(),
@@ -137,7 +133,6 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen" style={{ background: '#020408', fontFamily: "'Courier New', monospace" }}>
-      {/* Demo banner */}
       {showDemoBanner && (
         <div style={{
           position: 'fixed', top: '48px', left: '50%', transform: 'translateX(-50%)',

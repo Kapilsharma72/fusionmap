@@ -90,7 +90,6 @@ export default function ManualEntryForm({ onAdd }: Props) {
 
       {open && (
         <div className="px-3 pb-3 space-y-2 text-xs font-mono">
-          {/* Type */}
           <div className="flex gap-1">
             {(['OSINT', 'HUMINT', 'IMINT'] as IntelType[]).map(t => (
               <button
@@ -146,7 +145,6 @@ export default function ManualEntryForm({ onAdd }: Props) {
             style={{ borderColor: '#1e293b' }}
           />
 
-          {/* Confidence */}
           <div className="flex items-center gap-2">
             <span className="text-slate-500">CONF:</span>
             <input
@@ -157,7 +155,6 @@ export default function ManualEntryForm({ onAdd }: Props) {
             <span className="text-green-400 w-8">{form.confidence}%</span>
           </div>
 
-          {/* Classification */}
           <select
             value={form.classification}
             onChange={e => set('classification', e.target.value)}
@@ -178,7 +175,6 @@ export default function ManualEntryForm({ onAdd }: Props) {
             style={{ borderColor: '#1e293b' }}
           />
 
-          {/* IMINT image upload */}
           {form.type === 'IMINT' && (
             <div className="space-y-1">
               <button

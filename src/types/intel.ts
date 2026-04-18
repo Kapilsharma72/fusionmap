@@ -11,7 +11,7 @@ export interface IntelNode {
   title: string;
   source: string;
   sourceType: IntelSource;
-  confidence: number; // 0-100
+  confidence: number;
   confidenceLevel: ConfidenceLevel;
   timestamp: string;
   summary: string;

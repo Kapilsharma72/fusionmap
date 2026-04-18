@@ -50,7 +50,6 @@ export default function MongoPanel({ onNodesLoaded, loaded }: Props) {
             <div>DB: intel_nodes | AUTH: SCRAM-SHA-256</div>
           </div>
 
-          {/* Terminal log */}
           <div
             ref={logRef}
             className="rounded p-2 h-28 overflow-y-auto text-xs font-mono"
