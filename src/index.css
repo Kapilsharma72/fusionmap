@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Leaflet popup: fusion-popup class overrides ── */
+.fusion-popup .leaflet-popup-content-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+  padding: 0 !important;
+  border-radius: 6px !important;
+  overflow: visible !important;
+}
+
+.fusion-popup .leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+}
+
+.fusion-popup .leaflet-popup-tip-container {
+  display: none !important;
+}
+
+.fusion-popup .leaflet-popup-close-button {
+  color: #64748b !important;
+  font-size: 16px !important;
+  top: 4px !important;
+  right: 8px !important;
+  z-index: 1000 !important;
+}
+
+.leaflet-popup {
+  z-index: 1000 !important;
+}
+
+/* ── Pulse animation for map dots ── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.4; }
+  70%  { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2.5s ease-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.pulse-ring-osint  { animation-delay: 0s; }
+.pulse-ring-humint { animation-delay: 0.8s; }
+.pulse-ring-imint  { animation-delay: 1.6s; }
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #020408;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 2px;
+}
+
+/* ── Select option dark styling ── */
+select option {
+  background: #0f172a;
+  color: #cbd5e1;
+}
